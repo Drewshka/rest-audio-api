@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Howl, Howler } from "howler";
-// import audio1 from "./audio/sound1.webm";
-// import audio2 from "./audio/sound2.mp3";
+import audio1 from "../audio/order.mp3";
+import audio2 from "../audio/into-the-night.mp3";
 
 const apiURL = "http://localhost:8080";
 const audioURL = `${apiURL}/api/audio`;
@@ -12,12 +12,14 @@ const HowlerJs = (props) => {
 
   //   useEffect(() => {
   //     async function getResults() {
-  //       const results = await axios.get(audioURL);
-  //       setData(results.data);
+  //       const results = await axios.get(audioURL, {
+  //         responseType: "blob",
+  //       });
+  //       setAudioFiles(results.data);
   //     }
   //     getResults();
   //   }, []);
-  //   console.log(data);
+  //   console.log(audioFiles);
 
   useEffect(() => {
     axios
@@ -40,19 +42,44 @@ const HowlerJs = (props) => {
   }, []);
   console.log(audioFiles);
 
+  //   const playAudio = async (id) => {
+  //     try {
+  //       const response = await axios.get(
+  //         `http://localhost:8080/api/audio/${id}`,
+  //         {
+  //           responseType: "blob",
+  //         }
+  //       );
+  //       const mp3 = new Blob([response.data], { type: "audio/mp3" });
+  //       const url = window.URL.createObjectURL(mp3);
+  //       const audio = new Audio(url);
+  //       audio.load();
+  //       await audio.play();
+  //     } catch (e) {
+  //       console.log("play audio error: ", e);
+  //     }
+  //   };
+
   //   const audioUrls = audioFiles.map((song) => song.audioSrc);
 
   //   const sound = new Howl({
   //     sprite: {
-  //       // src: [audio1, audio2],
-  //       src: [audioUrls],
+  //       src: [audio1, audio2],
+  //       //   src: [audioUrls],
   //     },
   //   });
 
   return (
     <div className="App">
       {/* <button onClick={() => sound.play()}>Play</button> */}
-      {audioFiles.map((song, i) => {
+      {/* <ul>
+        {audioFiles.map((item, id) => (
+          <li key={id} onClick={() => playAudio(item.id)}>
+            {item.title}
+          </li>
+        ))}
+      </ul> */}
+      {/* {audioFiles.map((song, i) => {
         return (
           <div className="songList" key={i}>
             <ul>
@@ -62,7 +89,7 @@ const HowlerJs = (props) => {
             </ul>
           </div>
         );
-      })}
+      })} */}
     </div>
   );
 };
