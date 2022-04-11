@@ -1,7 +1,6 @@
 // const database = require("../knexfile");
 // const knex = require("knex")(database);
 
-// const knex = require("knex")(require("../knexfile"));
 const knex = require("knex")(require("../knexfile").development);
 
 const listAudio = async () => {
