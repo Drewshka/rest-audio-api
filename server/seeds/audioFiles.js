@@ -4,26 +4,67 @@
  */
 exports.seed = async function (knex) {
   // Deletes ALL existing entries
+  // const audioFiles = [
+  //   {
+  //     id: "1",
+  //     title: "Into the night",
+  //     artist: "prazkhanal",
+  //     audioSrc: "../audioFiles/into-the-night.mp3",
+  //   },
+  //   {
+  //     id: "2",
+  //     title: "Order",
+  //     artist: "ComaStudio",
+  //     audioSrc: "../audioFiles/order.mp3",
+  //   },
+  //   {
+  //     id: "3",
+  //     title: "The cradle of your soul",
+  //     artist: "Lemon Music Studio",
+  //     audioSrc: "../audioFiles/the-cradle-of-your-soul.mp3",
+  //   },
+  // ];
   const audioFiles = [
     {
       id: "1",
       title: "Into the night",
       artist: "prazkhanal",
-      audioSrc: "../audioFiles/into-the-night.mp3",
+      audioSrc: "songs/into-the-night.mp3",
     },
     {
       id: "2",
       title: "Order",
       artist: "ComaStudio",
-      audioSrc: "../audioFiles/order.mp3",
+      audioSrc: "songs/order.mp3",
     },
     {
       id: "3",
       title: "The cradle of your soul",
       artist: "Lemon Music Studio",
-      audioSrc: "../audioFiles/the-cradle-of-your-soul.mp3",
+      audioSrc: "songs/the-cradle-of-your-soul.mp3",
     },
   ];
+
+  // const audioFiles = [
+  //   {
+  //     id: "1",
+  //     title: "Into the night",
+  //     artist: "prazkhanal",
+  //     audioSrc: "/audio/into-the-night.mp3",
+  //   },
+  //   {
+  //     id: "2",
+  //     title: "Order",
+  //     artist: "ComaStudio",
+  //     audioSrc: "/audio/order.mp3",
+  //   },
+  //   {
+  //     id: "3",
+  //     title: "The cradle of your soul",
+  //     artist: "Lemon Music Studio",
+  //     audioSrc: "/audio/the-cradle-of-your-soul.mp3",
+  //   },
+  // ];
   return knex("audioFiles")
     .del()
     .then(function () {

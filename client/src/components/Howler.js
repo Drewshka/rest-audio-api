@@ -1,14 +1,14 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Howl, Howler } from "howler";
-import audio1 from "../audio/order.mp3";
-import audio2 from "../audio/into-the-night.mp3";
+// import axios from "axios";
+// import React, { useEffect, useState } from "react";
+// import { Howl, Howler } from "howler";
+// import audio1 from "../audio/order.mp3";
+// import audio2 from "../audio/into-the-night.mp3";
 
 const apiURL = "http://localhost:8080";
 const audioURL = `${apiURL}/api/audio`;
 
 const HowlerJs = (props) => {
-  const [audioFiles, setAudioFiles] = useState([]);
+  //   const [audioFiles, setAudioFiles] = useState([]);
 
   //   useEffect(() => {
   //     async function getResults() {
@@ -21,26 +21,26 @@ const HowlerJs = (props) => {
   //   }, []);
   //   console.log(audioFiles);
 
-  useEffect(() => {
-    axios
-      .get(audioURL)
-      .then(async function (response) {
-        response.data.map(async (song) => {
-          try {
-            // const gigAddress = gig.address;
-            const songUrl = song.audioSrc;
-            console.log(songUrl);
-          } catch (error) {
-            console.log("Error", error);
-          }
-        });
-        setAudioFiles(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, []);
-  console.log(audioFiles);
+  //   useEffect(() => {
+  //     axios
+  //       .get(audioURL)
+  //       .then(async function (response) {
+  //         response.data.map(async (song) => {
+  //           try {
+  //             // const gigAddress = gig.address;
+  //             const songUrl = song.audioSrc;
+  //             console.log(songUrl);
+  //           } catch (error) {
+  //             console.log("Error", error);
+  //           }
+  //         });
+  //         setAudioFiles(response.data);
+  //       })
+  //       .catch(function (error) {
+  //         console.log(error);
+  //       });
+  //   }, []);
+  //   console.log(audioFiles);
 
   //   const playAudio = async (id) => {
   //     try {
