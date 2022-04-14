@@ -1,26 +1,21 @@
 import React, { useState, useEffect } from "react";
-import HowlerJs from "./components/Howler";
+// import HowlerJs from "./components/Howler";
 import axios from "axios";
-// import audio1 from "./audio/order.mp3";
-// import audio2 from "./audio/into-the-night.mp3";
-// import audio3 from "./audio/the-cradle-of-your-soul.mp3";
-import WaveSurfer from "./components/WaveSurfer";
-import "./App.css";
+// import WaveSurfer from "./components/WaveSurfer";
+// import "./App.css";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import AudioPlayer from "material-ui-audio-player";
+import { createTheme } from "@material-ui/core/styles";
+const muiTheme = createTheme({});
 
 const apiURL = "http://localhost:8080";
 const audioURL = `${apiURL}/api/audio`;
 
 function App() {
   const [audioFiles, setAudioFiles] = useState([]);
-  // let trackList = [audio1, audio2, audio3];
-  const audioUrls = audioFiles.map((song) => song.audioSrc);
-  console.log(audioUrls);
-  // var joinedString = "[" + audioUrls.join(", ") + "]";
-  // console.log(joinedString);
 
-  // console.log(audio1);
-
-  // let trackList = [audioUrls];
+  // const audioUrls = audioFiles.map((song) => song.audioSrc);
+  // console.log(audioUrls);
 
   useEffect(() => {
     async function getResults() {
@@ -33,18 +28,32 @@ function App() {
 
   return (
     <div className="App">
-      {/* <header className="App-header">Audio API</header> */}
+      {/* <header className="App">Audio API</header> */}
+      {/* {audioUrls.map((track, idx) => (
+        <WaveSurfer audio={track} index={idx} key={idx} />
+      ))} */}
 
-      <HowlerJs />
-      {/* {trackList.map((track, idx) => (
-        <WaveSurfer audio={track} index={idx} key={idx} />
-      ))} */}
-      {audioUrls.map((track, idx) => (
-        <WaveSurfer audio={track} index={idx} key={idx} />
+      {audioFiles.map((item, index) => (
+        <ThemeProvider theme={muiTheme} key={index}>
+          <h4>
+            {item.title} - {item.artist}
+          </h4>
+          <AudioPlayer
+            // index={index}
+            // key={index}
+            elevation={1}
+            width="100%"
+            variation="default"
+            spacing={3}
+            // download={true}
+            // autoplay={true}
+            order="standart"
+            preload="auto"
+            loop={true}
+            src={item.audioSrc}
+          />
+        </ThemeProvider>
       ))}
-      {/* {audioFiles.map((track, idx) => (
-        <WaveSurfer audio={track} index={idx} key={idx} />
-      ))} */}
     </div>
   );
 }
