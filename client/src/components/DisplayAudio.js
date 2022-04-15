@@ -1,10 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
+// import { Link } from "react-router-dom";
 import axios from "axios";
 import { ThemeProvider } from "@material-ui/core";
 import AudioPlayer from "material-ui-audio-player";
-import { Modal, Button, Alert } from "react-bootstrap";
+// import { Modal, Button, Alert } from "react-bootstrap";
 import { createTheme } from "@material-ui/core/styles";
-import Song from "./Song";
+import Modal from "./Modal";
+// import Update from "./Update";
+// import editIcon from "../assets/editIcon.svg";
+// import Song from "./Song";
 // import AudioContext from "../contexts/AudioContext";
 
 const muiTheme = createTheme({});
@@ -14,26 +18,27 @@ const audioURL = `${apiURL}/api/audio`;
 
 function DisplayAudio(props) {
   const [audioFiles, setAudioFiles] = useState([]);
-  const [showAlert, setShowAlert] = useState(false);
-  const [show, setShow] = useState(false);
+  // const [modalOpen, setModalOpen] = useState(false);
+  // const [showAlert, setShowAlert] = useState(false);
+  // const [show, setShow] = useState(false);
   // const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
+  // const handleClose = () => setShow(false);
   // const { sortededSongs } = useContext(AudioContext);
 
-  const handleShowAlert = () => {
-    setShowAlert(true);
-    setTimeout(() => {
-      setShowAlert(false);
-    }, 2000);
-  };
+  // const handleShowAlert = () => {
+  //   setShowAlert(true);
+  //   setTimeout(() => {
+  //     setShowAlert(false);
+  //   }, 2000);
+  // };
 
-  useEffect(() => {
-    handleClose();
+  // useEffect(() => {
+  //   handleClose();
 
-    return () => {
-      handleShowAlert();
-    };
-  }, [audioFiles]);
+  //   return () => {
+  //     handleShowAlert();
+  //   };
+  // }, [audioFiles]);
 
   useEffect(() => {
     async function getResults() {
@@ -44,21 +49,40 @@ function DisplayAudio(props) {
   }, []);
   console.log(audioFiles);
 
+  // const Update = (id) => {
+  //   console.log(id);
+  //   // props.history.push("/Update/" + id);
+  //   // window.location.reload(false);
+  // };
+
   return (
     <div className="DisplayAudio">
-      <Alert show={showAlert} variant="success">
-        Audio List Updated Succefully!
-      </Alert>
       {audioFiles.map((item, index) => (
         <ThemeProvider theme={muiTheme} key={index}>
-          <div key={item.id}>
-            <Song song={item} key={index} />
+          <h1>Open</h1>
+          <div>
+            <Modal song={item} />
+            <h4>
+              {item.id} - {item.title} - {item.artist}
+            </h4>
           </div>
-          {/* <Song song={item} key={index} /> */}
-          {/* <h4>
-            {item.id} - {item.title} - {item.artist}
-          </h4> */}
-          {/* <AudioPlayer
+          {/* <div key={item.id}>
+            <Song song={item} key={index} />
+          </div> */}
+          {/* <Link
+            to={`/${item.id}`}
+            className="audio-list__item-link"
+            key={item.id}>
+            <img
+              src={editIcon}
+              alt="edit icon"
+              className="audio-list__table-data-icons--edit"
+            />
+          </Link> */}
+
+          {/* <button onClick={() => Update(item.id)}>Update</button> */}
+
+          <AudioPlayer
             // index={index}
             // key={index}
             // autoplay={true}
@@ -71,7 +95,7 @@ function DisplayAudio(props) {
             preload="auto"
             loop={true}
             src={item.audioSrc}
-          /> */}
+          />
         </ThemeProvider>
       ))}
     </div>
@@ -79,24 +103,3 @@ function DisplayAudio(props) {
 }
 
 export default DisplayAudio;
-
-// useEffect(() => {
-//   async function handleSubmit(event, id) {
-//     const newResults = await axios.put(audioURL / `${id}`, {
-//       title: event.target.title.value,
-//       artist: event.target.artist.value,
-//     });
-//     setAudioFiles(newResults.data);
-//     window.location.reload();
-//   }
-//   handleSubmit();
-// }, []);
-
-// const updateListArray = (obj, index) => {
-//   let tempAudios = audioFiles;
-//   tempAudios[index] = obj;
-//   localStorage.setItem("taskList", JSON.stringify(tempAudios));
-
-//   setAudioFiles(tempAudios);
-//   window.location.reload();
-// };

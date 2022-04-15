@@ -1,121 +1,146 @@
-import React, { useState, useEffect } from "react";
+import { Component } from "react";
+import { Link } from "react-router-dom";
+// import "./EditAudioFile.scss";
+// import arrow from "../../assets/icons/arrow_back-24px.svg";
 import axios from "axios";
-
-// import "./App.css";
+// import error from "../../assets/icons/error-24px.svg";
+import error from "../assets/errorIcon.svg";
+// import { API_URL } from "../../config";
 
 const apiURL = "http://localhost:8080";
 const audioURL = `${apiURL}/api/audio`;
 
-const EditAudioFile = () => {
-  const [todoEditing, setTodoEditing] = useState(null);
-  const [editingText, setEditingText] = useState("");
-  const [audioFiles, setAudioFiles] = useState([]);
-  const [audioFile, setAudioFile] = useState("");
+export default class EditAudioFile extends Component {
+  state = {
+    title: "",
+    titleValid: true,
+    artist: "",
+    artistValid: true,
+  };
 
-  //   React.useEffect(() => {
-  //     const json = localStorage.getItem("todos");
-  //     const loadedTodos = JSON.parse(json);
-  //     if (loadedTodos) {
-  //       setTodos(loadedTodos);
-  //     }
-  //   }, []);
+  componentDidMount() {
+    axios
+      .get(`${audioURL}`)
+      .then((response) => {
+        let foundId = response.data.find((song) => {
+          return song.id === this.props.match.params.id;
+        });
+        return axios.get(`${audioURL}/${foundId.id}`).then((response) => {
+          const { title, artist } = response.data;
+          // const { position, phone, email } = response.data.contact;
+          this.setState({
+            title,
+            artist,
+          });
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
-  //   React.useEffect(() => {
-  //     const json = JSON.stringify(todos);
-  //     localStorage.setItem("todos", json);
-  //   }, [todos]);
+  handleChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
 
-  //   function handleSubmit(e) {
-  //     e.preventDefault();
+  handleSubmit = (event) => {
+    event.preventDefault();
+    const { title, artist } = this.state;
 
-  //     const newTodo = {
-  //       id: new Date().getTime(),
-  //       text: audioFile,
-  //       completed: false,
-  //     };
-  //     setTodos([...todos].concat(newTodo));
-  //     setTodo("");
-  //   }
-
-  useEffect(() => {
-    async function getResults() {
-      const results = await axios.get(audioURL);
-      setAudioFiles(results.data);
+    if (!(title && artist)) {
+      alert("Please fill out all fields in the form");
+      return;
     }
-    getResults();
-  }, []);
-  console.log(audioFiles);
 
-  //   function deleteTodo(id) {
-  //     let updatedTodos = [...todos].filter((audioFile) => todo.id !== id);
-  //     setTodos(updatedTodos);
-  //   }
-
-  function toggleComplete(id) {
-    let updatedAudioFiles = [...audioFiles].map((audioFile) => {
-      if (audioFile.id === id) {
-        audioFile.completed = !audioFile.completed;
-      }
-      return audioFile;
+    axios.get(`${audioURL}`).then(async (response) => {
+      let foundId = response.data.find((song) => {
+        return song.id === this.props.match.params.id;
+      });
+      return axios
+        .patch(`${{ audioURL }}/${foundId.id}`, {
+          title,
+          artist,
+        })
+        .then(() => {
+          this.props.history.push("/");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     });
-    setAudioFiles(updatedAudioFiles);
-  }
+  };
 
-  function submitEdits(id) {
-    const updatedAudioFiles = [...audioFiles].map((audioFile) => {
-      if (audioFile.id === id) {
-        audioFile.text = editingText;
-      }
-      return audioFile;
-    });
-    setAudioFiles(updatedAudioFiles);
-    setTodoEditing(null);
-  }
-
-  return (
-    <div id="audioFile-list">
-      <h1>Todo List</h1>
-      {/* <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          onChange={(e) => setTodo(e.target.value)}
-          value={audioFile}
-        />
-        <button type="submit">Add Todo</button>
-      </form> */}
-      {audioFiles.map((audioFile) => (
-        <div key={audioFile.id} className="audioFile">
-          <div className="audioFile-text">
-            <input
-              type="checkbox"
-              id="completed"
-              checked={audioFile.completed}
-              onChange={() => toggleComplete(audioFile.id)}
+  render() {
+    return (
+      <form className="edit-warehouse-form" onSubmit={this.handleSubmit}>
+        <h1 className="edit-warehouse-form__title">
+          {/* <Link to="/warehouses/">
+            <img
+              className="edit-warehouse-form__arrow"
+              src={arrow}
+              alt="Back arrow"
             />
-            {audioFile.id === todoEditing ? (
+          </Link> */}
+          Edit Audio
+        </h1>
+        <section className="edit-warehouse-form__main">
+          <article className="edit-warehouse-form__details edit-warehouse-form__details-1">
+            <h2 className="edit-warehouse-form__subtitle">Warehouse Details</h2>
+            <label className="edit-warehouse-form__label">
+              Title
               <input
+                className={
+                  this.state.titleValid
+                    ? "edit-warehouse-form__field"
+                    : "edit-warehouse-form__field edit-warehouse-form__field--error"
+                }
                 type="text"
-                onChange={(e) => setEditingText(e.target.value)}
-              />
-            ) : (
-              <div>{audioFile.text}</div>
-            )}
-          </div>
-          <div className="audioFile-actions">
-            {audioFile.id === todoEditing ? (
-              <button onClick={() => submitEdits(audioFile.id)}>
-                Submit Edits
-              </button>
-            ) : (
-              <button onClick={() => setTodoEditing(audioFile.id)}>Edit</button>
-            )}
-
-            {/* <button onClick={() => deleteTodo(audioFile.id)}>Delete</button> */}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-export default EditAudioFile;
+                name="name"
+                onChange={this.handleChange}
+                value={this.state.name}></input>
+              {!this.state.titleValid && (
+                <p className="edit-warehouse-form__error">
+                  <img
+                    className="edit-warehouse-form__error__icon"
+                    src={error}
+                    alt="error icon"
+                  />
+                  This field is required
+                </p>
+              )}
+            </label>
+            <label className="edit-warehouse-form__label">
+              Artist
+              <input
+                className={
+                  this.state.artistValid
+                    ? "edit-warehouse-form__field"
+                    : "edit-warehouse-form__field edit-warehouse-form__field--error"
+                }
+                type="text"
+                name="address"
+                onChange={this.handleChange}
+                value={this.state.address}></input>
+              {!this.state.artistValid && (
+                <p className="edit-warehouse-form__error">
+                  <img
+                    className="edit-warehouse-form__error__icon"
+                    src={error}
+                    alt="error icon"
+                  />
+                  This field is required
+                </p>
+              )}
+            </label>
+          </article>
+        </section>
+        <section className="edit-warehouse-form__buttons">
+          <Link to="/">
+            <button className="edit-warehouse-form__cancel">Cancel</button>
+          </Link>
+          <button className="edit-warehouse-form__submit">Save</button>
+        </section>
+      </form>
+    );
+  }
+}
