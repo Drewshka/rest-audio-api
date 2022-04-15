@@ -20,7 +20,6 @@ let options = {
 
 //* serve the static pages
 app.use(express.static(path.join(__dirname, "audioFiles"), options));
-// app.use(express.static(path.join(__dirname, "public/songs"), options));
 
 app.use("/api/audio", audioRoutes);
 

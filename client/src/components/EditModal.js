@@ -1,12 +1,10 @@
-// import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import React, { useState, useEffect } from "react";
-import { Redirect, useHistory } from "react-router-dom";
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
-import { Grid, FormControl, FormHelperText } from "@material-ui/core";
+import { FormControl } from "@material-ui/core";
 import axios from "axios";
 
 const style = {
@@ -24,23 +22,14 @@ const style = {
 const apiURL = "http://localhost:8080";
 const audioURL = `${apiURL}/api/audio`;
 
-export default function BasicModal(props) {
+export default function EditModal(props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [audioFiles, setAudioFiles] = useState([]);
   const [data, setData] = useState({
     title: "",
     artist: "",
   });
-
-  useEffect(() => {
-    async function getResults() {
-      const results = await axios.get(audioURL);
-      setAudioFiles(results.data);
-    }
-    getResults();
-  }, []);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -59,26 +48,16 @@ export default function BasicModal(props) {
       .put(`${audioURL}/${id}`, data)
       .then((res) => {
         console.log(res.data);
-        // props.history.push("/");
         window.location.reload(false);
-        // const myData = [...audioList, res.data];
-        // setAudioList(myData);
       })
       .catch((err) => console.error(err));
   };
 
-  console.log(props.song.id);
-
-  const history = useHistory();
-
-  // const Update = (id) => {
-  //   console.log(id);
-  // };
   const { title, artist } = data;
 
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
+      <Button onClick={handleOpen}>Edit Song</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -90,7 +69,6 @@ export default function BasicModal(props) {
           </Typography>
           <form onSubmit={submit}>
             <Box
-              // component="form"
               sx={{
                 "& > :not(style)": { m: 1, width: "25ch" },
               }}
