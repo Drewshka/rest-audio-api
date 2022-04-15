@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from "react";
-// import HowlerJs from "./components/Howler";
+import DisplayAudio from "./components/DisplayAudio";
 import axios from "axios";
-// import WaveSurfer from "./components/WaveSurfer";
-// import "./App.css";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
-import AudioPlayer from "material-ui-audio-player";
-import { createTheme } from "@material-ui/core/styles";
-const muiTheme = createTheme({});
+import AudioContextProvider from "./contexts/AudioContext";
+// import EditAudioFile from "./components/EditAudioFile";
+// import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+// import { ThemeProvider } from "@material-ui/core";
+// import AudioPlayer from "material-ui-audio-player";
+// import { createTheme } from "@material-ui/core/styles";
+// const muiTheme = createTheme({});
 
 const apiURL = "http://localhost:8080";
 const audioURL = `${apiURL}/api/audio`;
 
 function App() {
   const [audioFiles, setAudioFiles] = useState([]);
-
-  // const audioUrls = audioFiles.map((song) => song.audioSrc);
-  // console.log(audioUrls);
 
   useEffect(() => {
     async function getResults() {
@@ -28,32 +26,37 @@ function App() {
 
   return (
     <div className="App">
-      {/* <header className="App">Audio API</header> */}
-      {/* {audioUrls.map((track, idx) => (
-        <WaveSurfer audio={track} index={idx} key={idx} />
-      ))} */}
-
-      {audioFiles.map((item, index) => (
+      <AudioContextProvider>
+        <DisplayAudio />
+      </AudioContextProvider>
+      {/* <EditAudioFile /> */}
+      {/* <Router>
+        <Switch>
+          <Route path="/" exact component={DisplayAudio} />
+          <Route path="/:id" component={DisplayAudio} />
+        </Switch>
+      </Router> */}
+      {/* {audioFiles.map((item, index) => (
         <ThemeProvider theme={muiTheme} key={index}>
           <h4>
-            {item.title} - {item.artist}
+            {item.id} - {item.title} - {item.artist}
           </h4>
           <AudioPlayer
             // index={index}
             // key={index}
+            // download={true}
+            // autoplay={true}
             elevation={1}
             width="100%"
             variation="default"
             spacing={3}
-            // download={true}
-            // autoplay={true}
             order="standart"
             preload="auto"
             loop={true}
             src={item.audioSrc}
           />
         </ThemeProvider>
-      ))}
+      ))} */}
     </div>
   );
 }
