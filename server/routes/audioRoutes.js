@@ -4,14 +4,10 @@ const express = require("express"),
     listAudio,
     getAudioFile,
     editAudioFile,
-    // postAudio,
-    // deleteAudioFile,
   } = require("../controllers/audioControllers.js");
 
 router.get("/", listAudio);
 router.get("/:id", getAudioFile);
 router.put("/:id", editAudioFile);
-// router.post("/", postAudio);
-// router.delete("/:id", deleteAudioFile);
 
 module.exports = router;
