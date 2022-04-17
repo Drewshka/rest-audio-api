@@ -13,8 +13,9 @@ module.exports = {
       user: "root",
       password: "rootroot",
       database: "audio",
-      host: "127.0.0.1",
+      host: "localhost",
       charset: "utf8",
+      // host: "127.0.0.1",
     },
   },
 };
