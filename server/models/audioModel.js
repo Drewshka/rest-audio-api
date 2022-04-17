@@ -40,8 +40,17 @@ const update = async (id, data) => {
   console.log("data parameter", data);
   try {
     const result = await knex("audioFiles").where("id", id).update(data);
-    const success = NodeID3.update(tags, filepath);
-    console.log(result);
+    const audioResult = await knex
+      .select("*")
+      .where("id", id)
+      .from("audioFiles");
+    console.log("result", result);
+    console.log("audioSrc", audioResult[0].audioSrc);
+    const success = NodeID3.update(
+      data,
+      `./audioFiles/${audioResult[0].audioSrc}`
+    );
+    console.log(success);
     return result;
   } catch (error) {
     console.log(error);
